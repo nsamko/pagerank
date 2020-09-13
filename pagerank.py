@@ -134,7 +134,41 @@ class WebGraph():
             x0 /= torch.norm(x0)
 
             # main loop
-            # FIXME: your code goes here
+            # Create "a" vector
+            a = torch.zeros(n)
+           
+            row_sums = torch.sparse.sum(self.P,1)
+
+            # If a row in P matrix consists all zeroes, add 1 to "a" vector
+            for i in range(n):
+                if row_sums[i] == 0:
+                    a[i] = 1
+                else:
+                    a[i] = 0
+
+            # Initialize x 
+            x = x0
+
+            for k in range (0, max_iterations):
+                # Keep track of previous and current x vectors 
+                x_prev = x
+
+                alpha_x = alpha * x_prev.t()
+                
+                # Left side of the equation 5.1
+                lhs = torch.sparse.mm(self.P.t(),alpha * x_prev.t()).t()
+
+                # Right side of the equation 5.1
+                rhs = (a * alpha * x_prev.t() + (1-alpha)).t()
+
+                # Creat x_curr vector by adding lefthand side and right hand side of the equation 
+                # 5.1 and taking the transpose of the resulting matrix
+                x_curr = (lhs + rhs).t()
+
+                # Stop iterating when difference between vectors is less than epsilon
+                if torch.norm(x_curr - x_prev) < epsilon:
+                    break
+
             x = x0.squeeze()
 
             return x
