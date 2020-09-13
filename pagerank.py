@@ -104,7 +104,10 @@ class WebGraph():
 
         else:
             v = torch.zeros(n)
-            # FIXME: your code goes here
+            
+            for i in range(n):
+                if url_satisfies_query(url=self._url_to_index(i), query = query):
+                    v[i] = 1
         
         v_sum = torch.sum(v)
         assert(v_sum>0)
@@ -150,28 +153,26 @@ class WebGraph():
             x = x0
 
             for k in range (0, max_iterations):
-                # Keep track of previous and current x vectors 
-                x_prev = x
+                # x1 is a new vector
+                x1 = x
 
-                alpha_x = alpha * x_prev.t()
+                alpha_x = alpha * x1.t()
                 
                 # Left side of the equation 5.1
-                lhs = torch.sparse.mm(self.P.t(),alpha * x_prev.t()).t()
+                lhs = alpha * torch.sparse.mm(self.P.t(),x1).t()
 
                 # Right side of the equation 5.1
-                rhs = (a * alpha * x_prev.t() + (1-alpha)).t()
+                rhs = (a * alpha * x1.t() + (1-alpha))*v.t()
 
                 # Creat x_curr vector by adding lefthand side and right hand side of the equation 
                 # 5.1 and taking the transpose of the resulting matrix
-                x_curr = (lhs + rhs).t()
+                x = (lhs + rhs).t()
 
                 # Stop iterating when difference between vectors is less than epsilon
-                if torch.norm(x_curr - x_prev) < epsilon:
+                if torch.norm(x - x1) < epsilon:
                     break
 
-            x = x0.squeeze()
-
-            return x
+            return x.squeeze()
 
 
     def search(self, pi, query='', max_results=10):
