@@ -284,7 +284,7 @@ but a simple keyword search for corona or related terms would not find these art
 Looking at other national security topics.
 
 ```
-$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='Russia' --search_query='-Russia'
+$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='russia' --search_query='-russia'
 INFO:root:rank=0 pagerank=4.3937e-01 url=www.lawfareblog.com/trump-asks-supreme-court-stay-congressional-subpeona-tax-returns
 INFO:root:rank=1 pagerank=2.8572e-01 url=www.lawfareblog.com/opening-statement-david-holmes
 INFO:root:rank=2 pagerank=2.8572e-01 url=www.lawfareblog.com/livestream-nov-21-impeachment-hearings-0
