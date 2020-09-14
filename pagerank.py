@@ -106,7 +106,8 @@ class WebGraph():
             v = torch.zeros(n)
             
             for i in range(n):
-                if url_satisfies_query(url=self._url_to_index(i), query = query):
+                url = self._index_to_url(i)
+                if url_satisfies_query(url, query):
                     v[i] = 1
         
         v_sum = torch.sum(v)
@@ -169,6 +170,7 @@ class WebGraph():
                 x = (lhs + rhs).t()
 
                 # Stop iterating when difference between vectors is less than epsilon
+                logging.debug('k = ' + str(k) + ' accuracy = ' + str(torch.norm(x1-x).item()))
                 if torch.norm(x - x1) < epsilon:
                     break
 
