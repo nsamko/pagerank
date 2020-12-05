@@ -9,9 +9,11 @@ import math
 import torch
 import gzip
 import csv
+import gensim.downloader
 
 import logging
 
+vectors = gensim.downloader.load('glove-twitter-200')
 
 class WebGraph():
 
@@ -223,6 +225,19 @@ def url_satisfies_query(url, query):
     '''
     satisfies = False
     terms = query.split()
+
+    # Task 1: Searches for the keywords in the query and the 5 most similar words
+    newList = []
+    for term in terms:
+        if term[0] == '-':
+            pass
+        else:
+            similar = vectors.most_similar(term)
+            for i in range(5):
+                newList.append(similar[i][0])
+
+    # Add the resulting words to the terms
+    terms.extend(newList)
 
     num_terms=0
     for term in terms:
