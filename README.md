@@ -40,6 +40,8 @@ INFO:root:rank=5 pagerank=8.9347e-02 url=1
 **Part 2: Using `--search_query` argument.**
 Using`--search_query` flag that takes a string as a parameter. The program returns all urls that match the query string sorted according to their pagerank, meaning that this gives us the most important pages on the blog related to our query.
 
+*Update:* Added Word2Vec to improve queries. This implementation of pagerank uses the gensim library to create word vectors and improve query results. Whenever a query (or personalization vector query) is made, we expand it by adding the 5 most similar words to it. 
+
 ```
 $ python3 pagerank.py --data=./lawfareblog.csv.gz --search_query='corona'
 INFO:root:rank=0 pagerank=4.5861e-03 url=www.lawfareblog.com/lawfare-podcast-united-nations-and-coronavirus-crisis
