@@ -13,7 +13,7 @@ import gensim.downloader
 
 import logging
 
-vectors = gensim.downloader.load('glove-twitter-200')
+vectors = gensim.downloader.load('glove-twitter-25')
 
 class WebGraph():
 
@@ -229,12 +229,11 @@ def url_satisfies_query(url, query):
     # Task 1: Searches for the keywords in the query and the 5 most similar words
     newList = []
     for term in terms:
-        if term[0] == '-':
-            pass
-        else:
-            similar = vectors.most_similar(term)
-            for i in range(5):
-                newList.append(similar[i][0])
+        similar = vectors.most_similar(term)
+        # Find top 5 similar terms
+        for i in range(5):
+            newList.append(similar[i][0])
+
 
     # Add the resulting words to the terms
     terms.extend(newList)
